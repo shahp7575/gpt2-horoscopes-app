@@ -51,7 +51,7 @@ def generate(prompt, model, tokenizer, temperature, num_outputs, top_k):
     
 with st.beta_container():
 
-    horoscope = st.selectbox("Choose Your Horoscope: ", ('Aquarius', 'Pisces', 'Aries',
+    horoscope = st.selectbox("Choose Your Sign: ", ('Aquarius', 'Pisces', 'Aries',
                                                          'Taurus', 'Gemini', 'Cancer',
                                                          'Leo', 'Virgo', 'Libra', 
                                                           'Scorpio', 'Sagittarius', 'Capricorn'), index=0)
