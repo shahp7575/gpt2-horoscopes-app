@@ -1,20 +1,33 @@
 import os
 import config
 import warnings
+import requests
 import torch
 import streamlit as st
+from streamlit_lottie import st_lottie
 from transformers import AutoTokenizer, AutoModelWithLMHead
 
 warnings.filterwarnings("ignore")
 
-st.header("Get Your Horoscopes!!")
-st.write("""
-Created by Parth Shah
+st.set_page_config(layout='centered', page_title='GPT2-Horoscopes')
 
-This is a Streamlit web app!
+def load_lottieurl(url: str):
+    # https://github.com/tylerjrichards/streamlit_goodreads_app/blob/master/books.py
+    r = requests.get(url)
+    if r.status_code != 200:
+        return None
+    return r.json()
+
+lottie_book = load_lottieurl('https://assets2.lottiefiles.com/packages/lf20_WL3aE7.json')
+st_lottie(lottie_book, speed=1, height=200, key="initial")
+
+st.markdown('# GPT2-Horoscopes!')
+st.markdown("""
+Hello! This lovely app lets GPT-2 write awesome horoscopes for you. All you need to do
+is select your sign and choose the horoscope category :)  
 """)
 
-@st.cache(allow_output_mutation=True)
+@st.cache(allow_output_mutation=True, max_entries=1)
 def download_model():
     tokenizer = AutoTokenizer.from_pretrained('shahp7575/gpt2-horoscopes')
     model = AutoModelWithLMHead.from_pretrained('shahp7575/gpt2-horoscopes')
@@ -39,9 +52,12 @@ def generate(prompt, model, tokenizer, temperature, num_outputs, top_k):
     
 with st.beta_container():
 
+    horoscope = st.selectbox("Choose Your Horoscope: ", ('Aquarius', 'Pisces', 'Aries',
+                                                         'Taurus', 'Gemini', 'Cancer',
+                                                         'Leo', 'Virgo', 'Libra', 
+                                                          'Scorpio', 'Sagittarius', 'Capricorn'), index=0)
     choice = st.selectbox("Choose Category:", ('general', 'career', 'love', 'wellness', 'birthday'),
                                     index=0, )
-    horoscope = st.selectbox("Choose Your Horoscope: ", ('aries', 'etc'))
 
 if st.button('Generate Horoscopes!'):        
     with st.spinner('Generating...'):
