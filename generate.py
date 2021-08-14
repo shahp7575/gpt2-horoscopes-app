@@ -58,11 +58,10 @@ with st.beta_container():
     choice = st.selectbox("Choose Category:", ('general', 'career', 'love', 'wellness', 'birthday'),
                                     index=0, )
 
-if st.button('Generate Horoscopes!'):        
+if st.button('Generate Horoscopes!'):
+    prompt = make_prompt(choice)
+    prompt_encoded = torch.tensor(tokenizer.encode(prompt)).unsqueeze(0)
     with st.spinner('Generating...'):
-        prompt = make_prompt(choice)
-        prompt_encoded = torch.tensor(tokenizer.encode(prompt)).unsqueeze(0)
-
         sample_output = generate(prompt_encoded, model, tokenizer, temperature=0.95, num_outputs=1, top_k=40)
         final_out = tokenizer.decode(sample_output[0], skip_special_tokens=True)
         st.write(final_out[len(choice)+2:])
