@@ -63,13 +63,13 @@ with st.beta_container():
     choice = st.selectbox("Choose Category:", ('general', 'career', 'love', 'wellness', 'birthday'),
                                     index=0, )
 
-    temp_slider = st.slider("Temperature", min_value=0.0, max_value=1.0, value=0.95)
+    temp_slider = st.slider("Temperature (Higher Value = More randomness)", min_value=0.01, max_value=1.0, value=0.95)
 
 if st.button('Generate Horoscopes!'):
     prompt = make_prompt(choice)
     prompt_encoded = torch.tensor(tokenizer.encode(prompt)).unsqueeze(0)
     with st.spinner('Generating...'):
-        sample_output = generate(prompt_encoded, model, tokenizer, temperature=0.95, num_outputs=1, top_k=40)
+        sample_output = generate(prompt_encoded, model, tokenizer, temperature=temp_slider, num_outputs=1, top_k=40)
         final_out = tokenizer.decode(sample_output[0], skip_special_tokens=True)
         st.write(final_out[len(choice)+2:])
 else: pass
