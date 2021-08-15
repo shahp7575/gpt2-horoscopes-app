@@ -63,6 +63,8 @@ with st.beta_container():
     choice = st.selectbox("Choose Category:", ('general', 'career', 'love', 'wellness', 'birthday'),
                                     index=0, )
 
+    temp_slider = st.slider("Temperature", min_value=0.0, max_value=1.0, value=0.95)
+
 if st.button('Generate Horoscopes!'):
     prompt = make_prompt(choice)
     prompt_encoded = torch.tensor(tokenizer.encode(prompt)).unsqueeze(0)
