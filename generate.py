@@ -25,6 +25,11 @@ st.markdown("""
 Hello! This lovely app lets GPT-2 write awesome horoscopes for you. All you need to do
 is select your sign and choose the horoscope category :)  
 """)
+st.markdown("""
+*If you are interested in the fine-tuned model, you can visit the [Model Hub](https://huggingface.co/shahp7575/gpt2-horoscopes) or 
+my [GitHub Repo](https://github.com/shahp7575/gpt2-horoscopes).*
+""")
+
 
 @st.cache(allow_output_mutation=True, max_entries=1)
 def download_model():
